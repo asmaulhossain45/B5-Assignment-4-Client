@@ -2,22 +2,48 @@ import type { IBook } from "@/types/books";
 import { Button } from "../ui/button";
 import { Link } from "react-router";
 import { cn } from "@/lib/utils";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "../ui/dropdown-menu";
+import { Ellipsis, SquarePen, Trash2 } from "lucide-react";
+import DeleteModal from "../modals/DeleteModal";
+import { useState } from "react";
+import EditModal from "../modals/EditModal";
 
 interface BookCardProps {
   book: IBook;
 }
 
 const BookCard = ({ book }: BookCardProps) => {
+  const [editModalOpen, setEditModalOpen] = useState(false);
+  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+
   return (
-    <li className="relative bg-secondary flex flex-col gap-4 rounded-xl p-4 border shadow">
-      <h6
-        className={cn(
-          "absolute top-4 right-4 text-[10px] text-white px-2 py-1 rounded-md tracking-wide",
-          book.available ? "bg-green-700" : "bg-red-700"
-        )}
-      >
-        {book.available ? "Available" : "Unavailable"}
-      </h6>
+    <li className="relative bg-foreground/5 flex flex-col gap-4 rounded-xl p-4 border shadow">
+      <DropdownMenu>
+        <DropdownMenuTrigger className="absolute top-2 right-2">
+          <button className="bg-background/50 hover:bg-background border rounded-full p-2 cursor-pointer">
+            <Ellipsis size={16} />
+          </button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent align="end" className="p-4">
+          <DropdownMenuItem
+            className="px-4 py-2"
+            onClick={() => setEditModalOpen(true)}
+          >
+            <SquarePen /> Edit Book
+          </DropdownMenuItem>
+          <DropdownMenuItem
+            className="px-4 py-2"
+            onClick={() => setDeleteModalOpen(true)}
+          >
+            <Trash2 /> Delete Book
+          </DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
       <img
         src={book.image}
         alt={book.title || "Book Image"}
@@ -35,6 +61,17 @@ const BookCard = ({ book }: BookCardProps) => {
           <Button className="w-full cursor-pointer">View Details</Button>
         </Link>
       </div>
+
+      <EditModal
+        book={book}
+        editModalOpen={editModalOpen}
+        setEditModalOpen={setEditModalOpen}
+      />
+      <DeleteModal
+        book={book}
+        deleteModalOpen={deleteModalOpen}
+        setDeleteModalOpen={setDeleteModalOpen}
+      />
     </li>
   );
 };

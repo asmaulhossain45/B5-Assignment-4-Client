@@ -19,7 +19,7 @@ const Navbar = () => {
   const pathname = useLocation().pathname;
   const [open, setOpen] = useState(false);
   return (
-    <nav className="border-b py-3">
+    <nav className="bg-foreground/5 border-b py-3">
       <div className="inner-container flex items-center justify-between gap-4">
         <NavLink to={"/"} className={"flex items-center gap-2"}>
           <img

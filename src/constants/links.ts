@@ -36,13 +36,21 @@ export const footerQuickLinks = [
 ];
 
 export const contactInfos = [
-  { label: siteConfig.contactInfos.phone, href: `tel:${siteConfig.contactInfos.phone}`, icon: PhoneCall },
+  {
+    label: siteConfig.contactInfos.phone,
+    href: `tel:${siteConfig.contactInfos.phone}`,
+    icon: PhoneCall,
+  },
   {
     label: siteConfig.contactInfos.whatsapp,
     href: `https://wa.me/${siteConfig.contactInfos.whatsapp}`,
     icon: MessageCircle,
   },
-  { label: siteConfig.contactInfos.email, href: `mailto:${siteConfig.contactInfos.email}`, icon: MailOpen },
+  {
+    label: siteConfig.contactInfos.email,
+    href: `mailto:${siteConfig.contactInfos.email}`,
+    icon: MailOpen,
+  },
   {
     label: siteConfig.contactInfos.address,
     href: `https://maps.google.com/?q=${siteConfig.contactInfos.address}`,

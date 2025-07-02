@@ -8,8 +8,6 @@ export function getPaginationRange(
   const left = Math.max(2, current - delta);
   const right = Math.min(total - 1, current + delta);
 
-  console.log(left, right);
-
   range.push(1);
 
   if (left > 2) range.push("...");

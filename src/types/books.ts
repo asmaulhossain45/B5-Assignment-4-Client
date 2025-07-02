@@ -1,9 +1,21 @@
+export const genres = [
+  "FICTION",
+  "NON-FICTION",
+  "SCI-FI",
+  "ROMANCE",
+  "MYSTERY",
+  "BIOGRAPHY",
+  "FANTASY",
+] as const;
+
+export type Genre = typeof genres[number];
+
 export interface IBook {
   id: string;
   title: string;
   author: string;
   image?: string;
-  genre: "Fiction" | "Non-Fiction" | "Sci-Fi" | "Romance" | "Mystery" | "Biography" | "Fantasy" | string;
+  genre: Genre;
   isbn: string;
   description?: string;
   copies: number;
