@@ -22,7 +22,7 @@ const footerSections = [
 
 const Footer = () => {
   return (
-    <footer className="border-t">
+    <footer className="bg-foreground/5">
       <div className="inner-container grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-8 md:gap-12 py-14 lg:py-28">
         <div>
           <NavLink to={"/"} className={"flex items-center gap-2"}>
