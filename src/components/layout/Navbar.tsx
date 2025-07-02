@@ -1,5 +1,5 @@
 import { cn } from "@/lib/utils";
-import { Menu } from "lucide-react";
+import { Menu, X } from "lucide-react";
 import { Button } from "../ui/button";
 import { siteConfig } from "@/lib/siteConfig";
 import ThemeToggle from "../common/ThemeToggle";
@@ -53,32 +53,33 @@ const Navbar = () => {
           <DropdownMenu open={open} onOpenChange={setOpen}>
             <DropdownMenuTrigger asChild>
               <Button variant="icon" size={"icon"}>
-                <Menu />
+                {!open ? <Menu /> : <X />}
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent className="w-56 mt-2" align="end">
+            <DropdownMenuContent className="w-56 mt-2 py-4" align="end">
               <DropdownMenuGroup>
                 {navLinks.map((link, index) => (
                   <DropdownMenuItem key={index}>
                     <NavLink
                       to={link.href}
                       onClick={() => setOpen(false)}
-                      className={"py-1 px-4"}
+                      className={"w-full flex items-center gap-2 py-2 px-4"}
                     >
-                      {link.label}
+                      <link.icon /> {link.label}
                     </NavLink>
                   </DropdownMenuItem>
                 ))}
               </DropdownMenuGroup>
-              <DropdownMenuSeparator />
+              <DropdownMenuSeparator className="my-2" />
               <DropdownMenuGroup>
                 {dashNavLinks.map((link, index) => (
                   <DropdownMenuItem key={index}>
                     <NavLink
                       to={link.href}
                       onClick={() => setOpen(false)}
-                      className={"py-1 px-4"}
+                      className={"w-full flex items-center gap-2 py-2 px-4"}
                     >
+                      <link.icon />
                       {link.label}
                     </NavLink>
                   </DropdownMenuItem>
