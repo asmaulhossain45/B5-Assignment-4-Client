@@ -23,8 +23,12 @@ import {
 import hero_bg from "@/assets/home_hero_bg.png";
 import hero_image from "@/assets/hero_image.png";
 import { Button } from "@/components/ui/button";
+import CustomPagination from "@/components/common/CustomPagination";
+import { useState } from "react";
 
 const LandingPage = () => {
+  const [page, setPage] = useState(1);
+  const totalPages = 5;
   const books: IBook[] = [
     {
       id: "1",
@@ -102,11 +106,15 @@ const LandingPage = () => {
 
       {/* All Books Section */}
       <section id="books" className="py-14 lg:py-28">
-        <div className="border-b mb-6 lg:mb-12">
+        <div className="border-b">
           <div className="inner-container flex items-center justify-between gap-4 pb-3">
             <div className="flex items-center gap-2">
-              <h3 className="text-xl lg:text-2xl xl:text-3xl font-bold">All Books</h3>
-              <h6 className="text-xs bg-secondary/50 p-2 rounded-full border">0{books.length}</h6>
+              <h3 className="text-xl lg:text-2xl xl:text-3xl font-bold">
+                All Books
+              </h3>
+              <h6 className="text-xs bg-secondary/50 p-2 rounded-full border">
+                0{books.length}
+              </h6>
             </div>
 
             <div className="flex items-center gap-2 md:gap-4">
@@ -153,11 +161,19 @@ const LandingPage = () => {
             </div>
           </div>
         </div>
-        <ul className="inner-container grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
+        <ul className="inner-container grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4  my-6 lg:my-12">
           {books.map((book: IBook, index) => (
             <BookCard key={index} book={book} />
           ))}
         </ul>
+
+        <div className="inner-container">
+          <CustomPagination
+            currentPage={page}
+            totalPages={totalPages}
+            onPageChange={(p) => setPage(p)}
+          />
+        </div>
       </section>
     </main>
   );
