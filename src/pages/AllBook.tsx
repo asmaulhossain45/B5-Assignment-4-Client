@@ -24,7 +24,7 @@ import {
 import { useGetBooksQuery } from "@/redux/api/bookApi";
 import { useState } from "react";
 
-const BookList = () => {
+const AllBook = () => {
   const [page, setPage] = useState(1);
   const totalPages = 5;
   const { data: books, isLoading } = useGetBooksQuery();
@@ -89,7 +89,7 @@ const BookList = () => {
             </div>
           </div>
         </div>
-        <ul className="inner-container grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4  my-6 lg:my-12">
+        <ul className="inner-container my-6 lg:my-12">
           {books && <DataTable columns={bookColumns} data={books} />}
         </ul>
 
@@ -105,4 +105,4 @@ const BookList = () => {
   );
 };
 
-export default BookList;
+export default AllBook;

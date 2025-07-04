@@ -11,7 +11,7 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { genres, type IBookInput } from "@/types/books";
+import { genres, type Genre } from "@/types/books";
 import {
   Select,
   SelectContent,
@@ -23,32 +23,31 @@ import {
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { useAddBookMutation } from "@/redux/api/bookApi";
+import {
+  bookFormSchema,
+  type BookFormType,
+} from "@/validations/bookForm.schema";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 const AddBook = () => {
   const [addBook, { isLoading }] = useAddBookMutation();
-  const form = useForm<IBookInput>({
+  const bookForm = useForm<BookFormType>({
+    resolver: zodResolver(bookFormSchema),
     defaultValues: {
       title: "",
       author: "",
-      genre: genres.map((genre) => genre)[0],
+      genre: "" as unknown as Genre,
       isbn: "",
       description: "",
-      copies: 0,
+      copies: "" as unknown as number,
     },
   });
 
-  const onSubmit = async (data: IBookInput) => {
-    try {
-      await addBook(data).unwrap();
-      toast.success("Book added successfully");
-      form.reset();
-    } catch (error) {
-      if (error?.data?.message?.includes("E11000 duplicate key")) {
-        toast.error("This ISBN already exists.");
-      } else {
-        toast.error(error?.data?.message || "Failed to add book");
-      }
-    }
+  const handleAddBook = async (data: BookFormType) => {
+    console.log(data);
+    await addBook(data);
+    toast.success(`Book added successfully.`);
+    bookForm.reset();
   };
 
   return (
@@ -63,13 +62,13 @@ const AddBook = () => {
               and number of copies.
             </p>
           </div>
-          <Form {...form}>
+          <Form {...bookForm}>
             <form
-              onSubmit={form.handleSubmit(onSubmit)}
+              onSubmit={bookForm.handleSubmit(handleAddBook)}
               className="grid grid-cols-1 lg:grid-cols-2 gap-4"
             >
               <FormField
-                control={form.control}
+                control={bookForm.control}
                 name="title"
                 rules={{ required: true }}
                 render={({ field }) => (
@@ -89,7 +88,7 @@ const AddBook = () => {
                 )}
               />
               <FormField
-                control={form.control}
+                control={bookForm.control}
                 name="author"
                 render={({ field }) => (
                   <FormItem>
@@ -109,7 +108,7 @@ const AddBook = () => {
                 )}
               />
               <FormField
-                control={form.control}
+                control={bookForm.control}
                 name="genre"
                 rules={{ required: true }}
                 render={({ field }) => (
@@ -139,7 +138,7 @@ const AddBook = () => {
                 )}
               />
               <FormField
-                control={form.control}
+                control={bookForm.control}
                 name="isbn"
                 render={({ field }) => (
                   <FormItem>
@@ -148,13 +147,17 @@ const AddBook = () => {
                       <FormMessage />
                     </div>
                     <FormControl>
-                      <Input placeholder="e.g. 978-3-16-148410-0" {...field}required />
+                      <Input
+                        placeholder="e.g. 978-3-16-148410-0"
+                        {...field}
+                        required
+                      />
                     </FormControl>
                   </FormItem>
                 )}
               />
               <FormField
-                control={form.control}
+                control={bookForm.control}
                 name="copies"
                 render={({ field }) => (
                   <FormItem>
@@ -163,13 +166,18 @@ const AddBook = () => {
                       <FormMessage />
                     </div>
                     <FormControl>
-                      <Input type="number" placeholder="e.g. 10" {...field} required/>
+                      <Input
+                        type="number"
+                        placeholder="e.g. 10"
+                        {...field}
+                        required
+                      />
                     </FormControl>
                   </FormItem>
                 )}
               />
               <FormField
-                control={form.control}
+                control={bookForm.control}
                 name="description"
                 render={({ field }) => (
                   <FormItem className="lg:col-span-2">

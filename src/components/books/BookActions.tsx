@@ -2,9 +2,9 @@ import { useState } from "react";
 import { Button } from "../ui/button";
 import type { IBook } from "@/types/books";
 import { Eye, SquarePen, Trash2 } from "lucide-react";
-import ViewBookModal from "../modals/ViewBook.modal";
-import EditBookModal from "../modals/EditBook.modal";
 import DeleteBookModal from "../modals/DeleteBook.Modal";
+import ViewBookModal from "../modals/ViewBook.Modal";
+import EditBookModal from "../modals/EditBook.Modal";
 
 const BookActions = ({ book }: { book: IBook }) => {
   const [viewOpen, setViewOpen] = useState(false);
