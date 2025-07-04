@@ -1,3 +1,4 @@
+import type { IBook } from "@/types/books";
 import {
   Dialog,
   DialogContent,
@@ -6,29 +7,21 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
-import type { IBook } from "@/types/books";
+import { Button } from "../ui/button";
 import { toast } from "sonner";
 
-interface DeleteModalProps {
+interface ViewModalProps {
   book: IBook;
-  deleteModalOpen: boolean;
-  setDeleteModalOpen: (open: boolean) => void;
+  open: boolean;
+  setOpen: (open: boolean) => void;
 }
 
-const DeleteModal = ({
-  book,
-  deleteModalOpen,
-  setDeleteModalOpen,
-}: DeleteModalProps) => {
-  console.log(book.id);
-
+const ViewBookModal = ({ book, open, setOpen }: ViewModalProps) => {
   const handleDelete = () => {
-    toast.success(`Book deleted successfully ${book.id}`);
-    setDeleteModalOpen(false);
+    toast.success(`Book deleted successfully ${book._id}`);
   };
   return (
-    <Dialog open={deleteModalOpen} onOpenChange={setDeleteModalOpen}>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogContent>
         <DialogHeader>
           <DialogTitle>Are you absolutely sure?</DialogTitle>
@@ -38,7 +31,7 @@ const DeleteModal = ({
         </DialogHeader>
 
         <DialogFooter>
-          <Button variant="outline" onClick={() => setDeleteModalOpen(false)}>
+          <Button variant="outline" onClick={() => setOpen(false)}>
             Cancel
           </Button>
           <Button variant="destructive" onClick={handleDelete}>
@@ -50,4 +43,4 @@ const DeleteModal = ({
   );
 };
 
-export default DeleteModal;
+export default ViewBookModal;

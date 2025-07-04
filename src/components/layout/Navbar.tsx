@@ -4,13 +4,12 @@ import { Button } from "../ui/button";
 import { siteConfig } from "@/lib/siteConfig";
 import ThemeToggle from "../common/ThemeToggle";
 import { NavLink, useLocation } from "react-router";
-import { dashNavLinks, navLinks } from "@/constants/links";
+import {navLinks } from "@/constants/links";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuGroup,
   DropdownMenuItem,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
 import { useState } from "react";
@@ -66,21 +65,6 @@ const Navbar = () => {
                       className={"w-full flex items-center gap-2 py-2 px-4"}
                     >
                       <link.icon /> {link.label}
-                    </NavLink>
-                  </DropdownMenuItem>
-                ))}
-              </DropdownMenuGroup>
-              <DropdownMenuSeparator className="my-2" />
-              <DropdownMenuGroup>
-                {dashNavLinks.map((link, index) => (
-                  <DropdownMenuItem key={index}>
-                    <NavLink
-                      to={link.href}
-                      onClick={() => setOpen(false)}
-                      className={"w-full flex items-center gap-2 py-2 px-4"}
-                    >
-                      <link.icon />
-                      {link.label}
                     </NavLink>
                   </DropdownMenuItem>
                 ))}

@@ -19,13 +19,12 @@ const CustomPagination = ({
   currentPage,
   totalPages,
   onPageChange,
-  align = "end",
 }: CustomPaginationProps) => {
   const pages = getPaginationRange(currentPage, totalPages);
 
   return (
     <Pagination>
-      <PaginationContent className={cn(`w-full justify-${align}`)}>
+      <PaginationContent className={cn(`w-full justify-end`)}>
         {/* Previous */}
         <PaginationItem className={cn(currentPage <= 1 && "hidden")}>
           <button

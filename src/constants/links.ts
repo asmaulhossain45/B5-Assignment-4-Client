@@ -17,21 +17,14 @@ import {
 export const navLinks = [
   { label: "Home", href: "/", icon: House },
   { label: "All Books", href: "/books", icon: House },
-  { label: "Add Book", href: "/create-book", icon: House },
-  { label: "Borrow Summary", href: "/borrow-summary", icon: House },
-];
-
-export const dashNavLinks = [
-  { label: "Home", href: "/", icon: House },
-  { label: "All Books", href: "/books", icon: House },
-  { label: "Add Book", href: "/create-book", icon: House },
+  { label: "Add Book", href: "/add-book", icon: House },
   { label: "Borrow Summary", href: "/borrow-summary", icon: House },
 ];
 
 export const footerQuickLinks = [
   { label: "Home", href: "/", icon: ChevronsRight },
   { label: "All Books", href: "/books", icon: ChevronsRight },
-  { label: "Add Book", href: "/create-book", icon: ChevronsRight },
+  { label: "Add Book", href: "/add-book", icon: ChevronsRight },
   { label: "Borrow Summary", href: "/borrow-summary", icon: ChevronsRight },
 ];
 
