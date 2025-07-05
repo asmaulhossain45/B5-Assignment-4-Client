@@ -1,5 +1,6 @@
+import type { ISummary } from "@/types/borrow";
 import type { ColumnDef } from "@tanstack/react-table";
-import type { ISummary } from "@/types/summary";
+
 
 export const summaryColumns: ColumnDef<ISummary>[] = [
   {
@@ -16,9 +17,4 @@ export const summaryColumns: ColumnDef<ISummary>[] = [
     accessorKey: "totalQuantity",
     header: "Quantity",
   },
-  // {
-  //   accessorKey: "actions",
-  //   header: "Actions",
-  //   cell: ({ row }) => <BookActions book={row.original} />,
-  // },
 ];

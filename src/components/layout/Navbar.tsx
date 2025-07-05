@@ -5,6 +5,7 @@ import { siteConfig } from "@/lib/siteConfig";
 import ThemeToggle from "../common/ThemeToggle";
 import { NavLink, useLocation } from "react-router";
 import {navLinks } from "@/constants/links";
+import siteIcon from "@/assets/BookHut.png"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -22,7 +23,7 @@ const Navbar = () => {
       <div className="inner-container flex items-center justify-between gap-4">
         <NavLink to={"/"} className={"flex items-center gap-2"}>
           <img
-            src={siteConfig.siteIcon}
+            src={siteIcon}
             alt={`${siteConfig.name} Icon`}
             className={cn("object-contain", "w-8 h-8", "lg:w-10 lg:h-10")}
           />

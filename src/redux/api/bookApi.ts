@@ -27,7 +27,7 @@ interface BookQueryParams {
 export const booksApi = createApi({
   reducerPath: "booksApi",
   baseQuery: fetchBaseQuery({
-    baseUrl: "http://localhost:5000/api",
+    baseUrl: "https://b5assignment4server.vercel.app/api",
   }),
   tagTypes: ["Book"],
   endpoints: (builder) => ({
@@ -40,11 +40,6 @@ export const booksApi = createApi({
           page = 1,
           limit = 10,
         } = params || {};
-
-        console.log(
-          `/books?filter=${filter}&sortBy=${sortBy}&sortOrder=${sortOrder}&page=${page}&limit=${limit}`
-        );
-
         return `/books?filter=${filter}&sortBy=${sortBy}&sortOrder=${sortOrder}&page=${page}&limit=${limit}`;
       },
       providesTags: ["Book"],

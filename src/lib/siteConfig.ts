@@ -6,7 +6,6 @@ export const siteConfig = {
   description:
     "BookHut is a sleek and intuitive Library Management System for organizing books, managing users, and streamlining library operations.",
   url: "https://nxtflare.com",
-  siteIcon: "/src/assets/BookHut.png",
 
   socialLinks: {
     facebook: "https://facebook.com/BookHut",

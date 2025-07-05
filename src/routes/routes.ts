@@ -5,6 +5,7 @@ import AddBook from "@/pages/AddBook";
 import NotFound from "@/pages/NotFound";
 import BorrowSummery from "@/pages/BorrowSummery";
 import { createBrowserRouter } from "react-router";
+import BookDetails from "@/pages/BookDetails";
 
 const router = createBrowserRouter([
   {
@@ -15,6 +16,10 @@ const router = createBrowserRouter([
       {
         path: "/books",
         Component: AllBook,
+      },
+      {
+        path: "/books/:bookId",
+        Component: BookDetails,
       },
       {
         path: "/add-book",

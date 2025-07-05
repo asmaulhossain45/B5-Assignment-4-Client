@@ -4,6 +4,7 @@ import { cn } from "@/lib/utils";
 import { ArrowUp} from "lucide-react";
 import { NavLink } from "react-router";
 import { Button } from "../ui/button";
+import siteIcon from "@/assets/BookHut.png"
 
 const footerSections = [
   {
@@ -27,7 +28,7 @@ const Footer = () => {
         <div>
           <NavLink to={"/"} className={"flex items-center gap-2"}>
             <img
-              src={siteConfig.siteIcon}
+              src={siteIcon}
               alt={`${siteConfig.name} Icon`}
               className={cn("object-contain", "w-8 h-8", "lg:w-10 lg:h-10")}
             />

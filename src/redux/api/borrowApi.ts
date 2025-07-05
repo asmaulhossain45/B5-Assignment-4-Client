@@ -10,8 +10,8 @@ interface BorrowResponse {
 
 export const borrowApi = createApi({
   reducerPath: "borrow",
-  baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:5000/api" }),
-  tagTypes: ["Borrow", "Book"],
+  baseQuery: fetchBaseQuery({ baseUrl: "https://b5assignment4server.vercel.app/api" }),
+  tagTypes: ["Borrow"],
   endpoints: (builder) => ({
     getSummary: builder.query<BorrowResponse, void>({
       query: () => "/borrow",
