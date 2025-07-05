@@ -25,7 +25,7 @@ const ViewBookModal = ({ book, open, setOpen }: ViewModalProps) => {
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle className="text-center">Book Details</DialogTitle>
+          <DialogTitle className="text-xl">Book Details</DialogTitle>
           <DialogDescription asChild>
             <div className="bg-foreground/5 text-left rounded-md p-4 mt-2">
               <div>
@@ -62,7 +62,7 @@ const ViewBookModal = ({ book, open, setOpen }: ViewModalProps) => {
 
         <DialogFooter>
           <DialogClose>
-            <Button variant="outline" type="button">
+            <Button variant="outline" type="button" className="w-full">
               Close
             </Button>
           </DialogClose>

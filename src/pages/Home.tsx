@@ -2,12 +2,13 @@ import hero_bg from "@/assets/home_hero_bg.png";
 import hero_image from "@/assets/hero_image.png";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router";
-import { useGetBooksQuery } from "@/redux/api/bookApi";
-import { DataTable } from "@/components/books/DataTable";
-import { bookColumns } from "@/components/books/Columns";
+import { selectBooks, useGetBooksQuery } from "@/redux/api/bookApi";
+import { DataTable } from "@/components/table/DataTable";
+import { bookColumns } from "@/components/table/BookColumns";
 
 const Home = () => {
-  const { data: books } = useGetBooksQuery();
+  const { data } = useGetBooksQuery();
+  const books = selectBooks(data);
 
   return (
     <main>

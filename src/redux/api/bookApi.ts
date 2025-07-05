@@ -1,15 +1,19 @@
 import type { IBook, IBookInput } from "@/types/books";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
-type ApiResponse<T> = {
-  success: boolean;
+interface BooksResponse {
   message: string;
-  data?: T;
+  success: boolean;
+  data?: IBook[] | IBook;
   error?: string | object;
-};
+}
 
-type BookResponse = ApiResponse<IBook>;
-type BooksResponse = ApiResponse<IBook[]>;
+interface BookResponse {
+  message: string;
+  success: boolean;
+  data?: IBook;
+  error?: string | object;
+}
 
 export const booksApi = createApi({
   reducerPath: "booksApi",
@@ -18,14 +22,12 @@ export const booksApi = createApi({
   }),
   tagTypes: ["Book"],
   endpoints: (builder) => ({
-    getBooks: builder.query<IBook[], void>({
+    getBooks: builder.query<BooksResponse, void>({
       query: () => "/books",
       providesTags: ["Book"],
-      transformResponse: (res: BooksResponse) => res.data ?? [],
     }),
-    getBook: builder.query<IBook, string>({
+    getBook: builder.query<BookResponse, string>({
       query: (id) => `/books/${id}`,
-      transformResponse: (res: BookResponse) => res.data!,
     }),
     addBook: builder.mutation<IBook, IBookInput>({
       query: (book) => ({
@@ -52,6 +54,10 @@ export const booksApi = createApi({
     }),
   }),
 });
+
+export const selectBooks = (response?: BooksResponse): IBook[] => {
+  return Array.isArray(response?.data) ? response.data : [];
+};
 
 export const {
   useGetBooksQuery,

@@ -13,9 +13,10 @@ import {
   TableRow,
 } from "../ui/table";
 
-interface DataTableProps<TBook, TData> {
-  columns: ColumnDef<TBook, TData>[];
-  data: TBook[];
+
+interface DataTableProps<TData, TValue> {
+  columns: ColumnDef<TData, TValue>[];
+  data: TData[];
 }
 
 export function DataTable<TData, TValue>({
@@ -28,7 +29,8 @@ export function DataTable<TData, TValue>({
     getCoreRowModel: getCoreRowModel(),
   });
 
-  console.log("Book:", data);
+  console.log("Data Table:",data);
+
   return (
     <div className="w-full">
       <Table>

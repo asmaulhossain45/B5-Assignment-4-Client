@@ -1,5 +1,5 @@
-import { bookColumns } from "@/components/books/Columns";
-import { DataTable } from "@/components/books/DataTable";
+import { bookColumns } from "@/components/table/BookColumns";
+import { DataTable } from "@/components/table/DataTable";
 import CustomPagination from "@/components/common/CustomPagination";
 import { Button } from "@/components/ui/button";
 import {
@@ -21,15 +21,16 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { useGetBooksQuery } from "@/redux/api/bookApi";
+import { selectBooks, useGetBooksQuery } from "@/redux/api/bookApi";
 import { useState } from "react";
 
 const AllBook = () => {
   const [page, setPage] = useState(1);
   const totalPages = 5;
-  const { data: books, isLoading } = useGetBooksQuery();
-  if (isLoading) return <div>Loading...</div>;
-  console.log("Books:", books);
+  const { data } = useGetBooksQuery();
+  const books = selectBooks(data);
+
+  console.log(books);
 
   return (
     <main>
@@ -40,9 +41,6 @@ const AllBook = () => {
               <h3 className="text-xl lg:text-2xl xl:text-3xl font-bold">
                 All Books
               </h3>
-              <h6 className="text-xs bg-secondary/50 p-2 rounded-full border">
-                {books ? books.length : 0}
-              </h6>
             </div>
 
             <div className="flex items-center gap-2 md:gap-4">
