@@ -1,36 +1,44 @@
-import { useState } from "react";
-import { Button } from "../ui/button";
+import { useAppDispatch } from "@/redux/hooks";
 import type { IBook } from "@/types/books";
-import { Eye, SquarePen, Trash2 } from "lucide-react";
-import DeleteBookModal from "../modals/DeleteBook.Modal";
-import ViewBookModal from "../modals/ViewBook.Modal";
-import EditBookModal from "../modals/EditBook.Modal";
+import { BookOpenCheck, Eye, SquarePen, Trash2 } from "lucide-react";
+import { openModal } from "@/redux/slices/modalSlice"; // ✅ import the correct action
 
 const BookActions = ({ book }: { book: IBook }) => {
-  const [viewOpen, setViewOpen] = useState(false);
-  const [editOpen, setEditOpen] = useState(false);
-  const [deleteOpen, setDeleteOpen] = useState(false);
+  const dispatch = useAppDispatch();
 
   return (
     <div className="flex items-center gap-2">
-      <Button onClick={() => setViewOpen(true)} variant={"icon"} size={"icon"}>
+      <button
+        className="flex flex-col items-center gap-1 bg-foreground/5 hover:bg-foreground/10 p-2 rounded-md cursor-pointer"
+        onClick={() => dispatch(openModal({ type: "view", book }))}
+      >
         <Eye size={16} />
-      </Button>
-      <Button onClick={() => setEditOpen(true)} variant={"icon"} size={"icon"}>
+        <span className="text-xs">View</span>
+      </button>
+
+      <button
+        className="flex flex-col items-center gap-1 bg-foreground/5 hover:bg-foreground/10 p-2 rounded-md cursor-pointer"
+        onClick={() => dispatch(openModal({ type: "borrow", book }))}
+      >
+        <BookOpenCheck size={16} />
+        <span className="text-xs">Borrow</span>
+      </button>
+
+      <button
+        className="flex flex-col items-center gap-1 bg-foreground/5 hover:bg-foreground/10 p-2 rounded-md cursor-pointer"
+        onClick={() => dispatch(openModal({ type: "edit", book }))}
+      >
         <SquarePen size={16} />
-      </Button>
-      <Button
-        onClick={() => setDeleteOpen(true)}
-        variant={"icon"}
-        size={"icon"}
+        <span className="text-xs">Update</span>
+      </button>
+
+      <button
+        className="flex flex-col items-center gap-1 bg-foreground/5 hover:bg-foreground/10 p-2 rounded-md cursor-pointer"
+        onClick={() => dispatch(openModal({ type: "delete", book }))}
       >
         <Trash2 size={16} />
-      </Button>
-
-      {/* {viewOpen && <BookView book={book} setOpen={setViewOpen} />} */}
-      <ViewBookModal book={book} setOpen={setViewOpen} open={viewOpen} />
-      <EditBookModal book={book} setOpen={setEditOpen} open={editOpen} />
-      <DeleteBookModal book={book} setOpen={setDeleteOpen} open={deleteOpen} />
+        <span className="text-xs">Delete</span>
+      </button>
     </div>
   );
 };

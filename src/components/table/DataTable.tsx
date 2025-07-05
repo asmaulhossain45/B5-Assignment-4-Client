@@ -29,8 +29,6 @@ export function DataTable<TData, TValue>({
     getCoreRowModel: getCoreRowModel(),
   });
 
-  console.log("Data Table:",data);
-
   return (
     <div className="w-full">
       <Table>

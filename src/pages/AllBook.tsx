@@ -30,7 +30,6 @@ const AllBook = () => {
   const { data } = useGetBooksQuery();
   const books = selectBooks(data);
 
-  console.log(books);
 
   return (
     <main>

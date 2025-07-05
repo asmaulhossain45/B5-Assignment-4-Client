@@ -40,7 +40,10 @@ interface ViewModalProps {
 const BorrowBookModal = ({ book, open, setOpen }: ViewModalProps) => {
   const [openCalendar, setOpenCalendar] = useState(false);
   const borrowForm = useForm<BorrowFormType>({
-    resolver: zodResolver(borrowFormSchema),
+    resolver: zodResolver(borrowFormSchema(book.copies)),
+    context: {
+      copies: book.copies,
+    },
     defaultValues: {
       book: book._id,
       quantity: "" as unknown as number,
@@ -53,6 +56,10 @@ const BorrowBookModal = ({ book, open, setOpen }: ViewModalProps) => {
     setOpen(false);
     borrowForm.reset();
   };
+
+  if (book.copies === 0 || !book.available) {
+    return toast.error(`${book.title} Book is not available.`);
+  }
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogContent>
@@ -79,7 +86,11 @@ const BorrowBookModal = ({ book, open, setOpen }: ViewModalProps) => {
                     <FormMessage />
                   </div>
                   <FormControl>
-                    <Input type="number" placeholder="1" {...field} />
+                    <Input
+                      type="number"
+                      placeholder={`Min 1 and Max ${book.copies}`}
+                      {...field}
+                    />
                   </FormControl>
                 </FormItem>
               )}
@@ -106,7 +117,7 @@ const BorrowBookModal = ({ book, open, setOpen }: ViewModalProps) => {
                           {field.value ? (
                             format(field.value, "PPP")
                           ) : (
-                            <span>Pick a date</span>
+                            <span>Pick a return date</span>
                           )}
                         </Button>
                       </FormControl>
