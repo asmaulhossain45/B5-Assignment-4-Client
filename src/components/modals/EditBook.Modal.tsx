@@ -37,6 +37,7 @@ import {
 import { Textarea } from "../ui/textarea";
 import { getErrorMessage } from "@/lib/getErrorMessage";
 import { useEditBookMutation } from "@/redux/api/bookApi";
+import { useNavigate } from "react-router";
 
 interface EditModalProps {
   book: IBook;
@@ -45,6 +46,7 @@ interface EditModalProps {
 }
 
 const EditBookModal = ({ book, open, setOpen }: EditModalProps) => {
+  const navigate = useNavigate();
   const [editBook, { isLoading }] = useEditBookMutation();
   const bookForm = useForm<EditBookFormType>({
     resolver: zodResolver(editBookFormSchema),
@@ -65,6 +67,7 @@ const EditBookModal = ({ book, open, setOpen }: EditModalProps) => {
       await editBook(book).unwrap();
       toast.success(`Book updated successfully.`);
       setOpen(false);
+      navigate("/books");
       bookForm.reset();
     } catch (error) {
       toast.error(getErrorMessage(error, "Failed to update book"));

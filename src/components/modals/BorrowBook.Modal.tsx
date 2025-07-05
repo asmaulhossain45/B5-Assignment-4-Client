@@ -32,7 +32,8 @@ import {
 import { useState } from "react";
 import { useBorrowBookMutation } from "@/redux/api/borrowApi";
 import { useGetBooksQuery } from "@/redux/api/bookApi";
-import type { FetchBaseQueryError } from "@reduxjs/toolkit/query";
+import { getErrorMessage } from "@/lib/getErrorMessage";
+import { useNavigate } from "react-router";
 
 interface ViewModalProps {
   book: IBook;
@@ -41,6 +42,7 @@ interface ViewModalProps {
 }
 
 const BorrowBookModal = ({ book, open, setOpen }: ViewModalProps) => {
+  const navigate = useNavigate();
   const [openCalendar, setOpenCalendar] = useState(false);
   const { refetch: refetchBooks } = useGetBooksQuery();
   const [borrowBook, { isLoading }] = useBorrowBookMutation();
@@ -63,18 +65,9 @@ const BorrowBookModal = ({ book, open, setOpen }: ViewModalProps) => {
       toast.success(`Book borrowed successfully.`);
       setOpen(false);
       borrowForm.reset();
+      navigate("/borrow-summary");
     } catch (error) {
-      let message = "Failed to borrow book";
-
-      if (typeof error === "object" && error !== null && "data" in error) {
-        const err = error as FetchBaseQueryError;
-        const errorData = err.data as { message?: string };
-        message = errorData.message || message;
-      } else if (error instanceof Error) {
-        message = error.message;
-      }
-
-      toast.error(message);
+      toast.error(getErrorMessage(error, "Failed to borrow book"));
     }
   };
 

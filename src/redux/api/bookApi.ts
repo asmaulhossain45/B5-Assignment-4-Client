@@ -6,6 +6,7 @@ interface BooksResponse {
   success: boolean;
   data?: IBook[] | IBook;
   error?: string | object;
+  meta?: { page: number; limit: number; total: number };
 }
 
 interface BookResponse {
@@ -15,6 +16,14 @@ interface BookResponse {
   error?: string | object;
 }
 
+interface BookQueryParams {
+  filter?: string;
+  sortBy?: string;
+  sortOrder?: "asc" | "desc";
+  page?: number;
+  limit?: number;
+}
+
 export const booksApi = createApi({
   reducerPath: "booksApi",
   baseQuery: fetchBaseQuery({
@@ -22,8 +31,22 @@ export const booksApi = createApi({
   }),
   tagTypes: ["Book"],
   endpoints: (builder) => ({
-    getBooks: builder.query<BooksResponse, void>({
-      query: () => "/books",
+    getBooks: builder.query<BooksResponse, BookQueryParams | void>({
+      query: (params = {}) => {
+        const {
+          filter = "",
+          sortBy = "title",
+          sortOrder = "asc",
+          page = 1,
+          limit = 10,
+        } = params || {};
+
+        console.log(
+          `/books?filter=${filter}&sortBy=${sortBy}&sortOrder=${sortOrder}&page=${page}&limit=${limit}`
+        );
+
+        return `/books?filter=${filter}&sortBy=${sortBy}&sortOrder=${sortOrder}&page=${page}&limit=${limit}`;
+      },
       providesTags: ["Book"],
     }),
     getBook: builder.query<BookResponse, string>({
@@ -57,6 +80,10 @@ export const booksApi = createApi({
 
 export const selectBooks = (response?: BooksResponse): IBook[] => {
   return Array.isArray(response?.data) ? response.data : [];
+};
+
+export const getTotalBooks = (response?: BooksResponse) => {
+  return response?.meta?.total || 0;
 };
 
 export const {

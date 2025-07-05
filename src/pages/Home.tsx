@@ -3,11 +3,11 @@ import hero_image from "@/assets/hero_image.png";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router";
 import { selectBooks, useGetBooksQuery } from "@/redux/api/bookApi";
-import { DataTable } from "@/components/table/DataTable";
-import { bookColumns } from "@/components/table/BookColumns";
+import BookCard from "@/components/common/BookCard";
+import { OctagonX } from "lucide-react";
 
 const Home = () => {
-  const { data } = useGetBooksQuery();
+  const { data } = useGetBooksQuery({ limit: 12 });
   const books = selectBooks(data);
 
   return (
@@ -63,12 +63,29 @@ const Home = () => {
               everyone.
             </p>
           </div>
-          <ul className="">
-            {books && <DataTable columns={bookColumns} data={books} />}
-          </ul>
-          <Link to={"/books"} className="flex items-center justify-center">
-            <Button>All Books</Button>
-          </Link>
+
+          {books && books.length > 0 ? (
+            <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 my-6">
+              {books.map((book, index) => (
+                <BookCard key={index} book={book} />
+              ))}
+            </ul>
+          ) : (
+            <div className="flex flex-col gap-4 items-center justify-center my-6">
+              <span>
+                <OctagonX size={86} />
+              </span>
+              <h1 className="text-center text-xl lg:text-2xl font-bold">
+                No Books Found
+              </h1>
+            </div>
+          )}
+
+          {books && books.length > 0 && (
+            <Link to={"/books"} className="flex items-center justify-center">
+              <Button>All Books</Button>
+            </Link>
+          )}
         </div>
       </section>
     </main>

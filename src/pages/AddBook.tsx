@@ -28,8 +28,11 @@ import {
   type BookFormType,
 } from "@/validations/bookForm.schema";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { getErrorMessage } from "@/lib/getErrorMessage";
+import { useNavigate } from "react-router";
 
 const AddBook = () => {
+  const navigate = useNavigate();
   const [addBook, { isLoading }] = useAddBookMutation();
   const bookForm = useForm<BookFormType>({
     resolver: zodResolver(bookFormSchema),
@@ -44,10 +47,14 @@ const AddBook = () => {
   });
 
   const handleAddBook = async (data: BookFormType) => {
-    console.log(data);
-    await addBook(data);
-    toast.success(`Book added successfully.`);
-    bookForm.reset();
+    try {
+      await addBook(data).unwrap();
+      toast.success("Book added successfully");
+      bookForm.reset();
+      navigate("/books");
+    } catch (error) {
+      toast.error(getErrorMessage(error, "Failed to add book"));
+    }
   };
 
   return (
