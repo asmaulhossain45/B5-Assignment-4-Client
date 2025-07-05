@@ -1,4 +1,4 @@
-import type { ISummary } from "@/types/summary";
+import { type IBorrowInput, type ISummary } from "@/types/borrow";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 interface BorrowResponse {
@@ -11,11 +11,19 @@ interface BorrowResponse {
 export const borrowApi = createApi({
   reducerPath: "borrow",
   baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:5000/api" }),
-  tagTypes: ["Borrow"],
+  tagTypes: ["Borrow", "Book"],
   endpoints: (builder) => ({
     getSummary: builder.query<BorrowResponse, void>({
       query: () => "/borrow",
       providesTags: ["Borrow"],
+    }),
+    borrowBook: builder.mutation<BorrowResponse, IBorrowInput>({
+      query: (book) => ({
+        url: "/borrow",
+        method: "POST",
+        body: book,
+      }),
+      invalidatesTags: ["Borrow"],
     }),
   }),
 });
@@ -24,4 +32,4 @@ export const selectSummary = (response?: BorrowResponse): ISummary[] => {
   return Array.isArray(response?.data) ? response.data : [];
 };
 
-export const { useGetSummaryQuery } = borrowApi;
+export const { useGetSummaryQuery, useBorrowBookMutation } = borrowApi;

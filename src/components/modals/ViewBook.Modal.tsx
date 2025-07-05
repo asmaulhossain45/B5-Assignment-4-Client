@@ -9,8 +9,8 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Button } from "../ui/button";
-import { useState } from "react";
-import BorrowBookModal from "./BorrowBook.Modal";
+import { useAppDispatch } from "@/redux/hooks";
+import { openModal } from "@/redux/slices/modalSlice";
 
 interface ViewModalProps {
   book: IBook;
@@ -19,7 +19,7 @@ interface ViewModalProps {
 }
 
 const ViewBookModal = ({ book, open, setOpen }: ViewModalProps) => {
-  const [borrowOpen, setBorrowOpen] = useState(false);
+  const dispatch = useAppDispatch();
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -66,17 +66,11 @@ const ViewBookModal = ({ book, open, setOpen }: ViewModalProps) => {
               Close
             </Button>
           </DialogClose>
-          <Button
-            onClick={() => {
-              setOpen(false);
-              setBorrowOpen(true);
-            }}
-          >
+          <Button onClick={() => dispatch(openModal({ type: "borrow", book }))}>
             Borrow Book
           </Button>
         </DialogFooter>
       </DialogContent>
-      <BorrowBookModal book={book} open={borrowOpen} setOpen={setBorrowOpen} />
     </Dialog>
   );
 };

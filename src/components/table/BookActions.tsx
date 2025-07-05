@@ -1,7 +1,7 @@
 import { useAppDispatch } from "@/redux/hooks";
 import type { IBook } from "@/types/books";
 import { BookOpenCheck, Eye, SquarePen, Trash2 } from "lucide-react";
-import { openModal } from "@/redux/slices/modalSlice"; // ✅ import the correct action
+import { openModal } from "@/redux/slices/modalSlice";
 
 const BookActions = ({ book }: { book: IBook }) => {
   const dispatch = useAppDispatch();
@@ -17,7 +17,8 @@ const BookActions = ({ book }: { book: IBook }) => {
       </button>
 
       <button
-        className="flex flex-col items-center gap-1 bg-foreground/5 hover:bg-foreground/10 p-2 rounded-md cursor-pointer"
+        className="flex flex-col items-center gap-1 bg-foreground/5 hover:bg-foreground/10 p-2 rounded-md cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+        disabled={book.copies === 0 || !book.available}
         onClick={() => dispatch(openModal({ type: "borrow", book }))}
       >
         <BookOpenCheck size={16} />

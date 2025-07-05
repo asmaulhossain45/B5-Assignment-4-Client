@@ -25,11 +25,14 @@ import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 import { format } from "date-fns";
 import { cn } from "@/lib/utils";
 import { Calendar } from "../ui/calendar";
-import { useState } from "react";
 import {
   borrowFormSchema,
   type BorrowFormType,
 } from "@/validations/borrowForm.schema";
+import { useState } from "react";
+import { useBorrowBookMutation } from "@/redux/api/borrowApi";
+import { useGetBooksQuery } from "@/redux/api/bookApi";
+import type { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 
 interface ViewModalProps {
   book: IBook;
@@ -39,6 +42,9 @@ interface ViewModalProps {
 
 const BorrowBookModal = ({ book, open, setOpen }: ViewModalProps) => {
   const [openCalendar, setOpenCalendar] = useState(false);
+  const { refetch: refetchBooks } = useGetBooksQuery();
+  const [borrowBook, { isLoading }] = useBorrowBookMutation();
+
   const borrowForm = useForm<BorrowFormType>({
     resolver: zodResolver(borrowFormSchema(book.copies)),
     context: {
@@ -50,16 +56,28 @@ const BorrowBookModal = ({ book, open, setOpen }: ViewModalProps) => {
       dueDate: "" as unknown as Date,
     },
   });
-  const handleBorrow = (data: BorrowFormType) => {
-    console.log(data);
-    toast.success(`${book.title} Book borrowed successfully.`);
-    setOpen(false);
-    borrowForm.reset();
+  const handleBorrow = async (data: BorrowFormType) => {
+    try {
+      await borrowBook(data);
+      await refetchBooks();
+      toast.success(`Book borrowed successfully.`);
+      setOpen(false);
+      borrowForm.reset();
+    } catch (error) {
+      let message = "Failed to borrow book";
+
+      if (typeof error === "object" && error !== null && "data" in error) {
+        const err = error as FetchBaseQueryError;
+        const errorData = err.data as { message?: string };
+        message = errorData.message || message;
+      } else if (error instanceof Error) {
+        message = error.message;
+      }
+
+      toast.error(message);
+    }
   };
 
-  if (book.copies === 0 || !book.available) {
-    return toast.error(`${book.title} Book is not available.`);
-  }
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogContent>
@@ -145,7 +163,9 @@ const BorrowBookModal = ({ book, open, setOpen }: ViewModalProps) => {
                   Cancel
                 </Button>
               </DialogClose>
-              <Button type="submit">Confirm</Button>
+              <Button type="submit">
+                {isLoading ? "Loading..." : "Confirm"}
+              </Button>
             </DialogFooter>
           </form>
         </Form>

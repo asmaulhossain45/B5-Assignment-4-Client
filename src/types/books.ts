@@ -2,8 +2,7 @@ export const genres = [
   "FICTION",
   "NON-FICTION",
   "SCIENCE",
-  "ROMANCE",
-  "MYSTERY",
+  "HISTORY",
   "BIOGRAPHY",
   "FANTASY",
 ] as const;

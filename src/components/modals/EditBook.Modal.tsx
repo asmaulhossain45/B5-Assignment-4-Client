@@ -22,8 +22,8 @@ import { Input } from "../ui/input";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
-  bookFormSchema,
-  type BookFormType,
+  editBookFormSchema,
+  type EditBookFormType,
 } from "@/validations/bookForm.schema";
 import {
   Select,
@@ -35,6 +35,8 @@ import {
   SelectValue,
 } from "../ui/select";
 import { Textarea } from "../ui/textarea";
+import { getErrorMessage } from "@/lib/getErrorMessage";
+import { useEditBookMutation } from "@/redux/api/bookApi";
 
 interface EditModalProps {
   book: IBook;
@@ -43,23 +45,30 @@ interface EditModalProps {
 }
 
 const EditBookModal = ({ book, open, setOpen }: EditModalProps) => {
-  const bookForm = useForm<BookFormType>({
-    resolver: zodResolver(bookFormSchema),
+  const [editBook, { isLoading }] = useEditBookMutation();
+  const bookForm = useForm<EditBookFormType>({
+    resolver: zodResolver(editBookFormSchema),
     defaultValues: {
+      _id: book?._id,
       title: book?.title || "",
       author: book?.author || "",
       genre: book?.genre || ("" as unknown as Genre),
       isbn: book?.isbn || "",
       description: book?.description || "",
       copies: book?.copies || ("" as unknown as number),
+      available: book?.available,
     },
   });
 
-  const handleBookEdit = (data: BookFormType) => {
-    console.log(data);
-    toast.success(`${book.title} Book updated successfully.`);
-    setOpen(false);
-    bookForm.reset();
+  const handleBookEdit = async (book: EditBookFormType) => {
+    try {
+      await editBook(book).unwrap();
+      toast.success(`Book updated successfully.`);
+      setOpen(false);
+      bookForm.reset();
+    } catch (error) {
+      toast.error(getErrorMessage(error, "Failed to update book"));
+    }
   };
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -69,7 +78,8 @@ const EditBookModal = ({ book, open, setOpen }: EditModalProps) => {
             Edit Book
           </DialogTitle>
           <DialogDescription>
-            Update the book details below. Make sure all fields are accurate before saving.
+            Update the book details below. Make sure all fields are accurate
+            before saving.
           </DialogDescription>
         </DialogHeader>
 
@@ -201,7 +211,7 @@ const EditBookModal = ({ book, open, setOpen }: EditModalProps) => {
                   Cancel
                 </Button>
               </DialogClose>
-              <Button type="submit">Update</Button>
+              <Button type="submit">{isLoading ? "Saving..." : "Save"}</Button>
             </DialogFooter>
           </form>
         </Form>

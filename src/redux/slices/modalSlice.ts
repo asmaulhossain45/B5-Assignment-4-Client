@@ -1,7 +1,7 @@
 import type { IBook } from "@/types/books";
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 
-type ModalType = "view" | "edit" | "delete" | "borrow" | null;
+export type ModalType = "view" | "edit" | "delete" | "borrow" | null;
 
 interface modalState {
   modalType: ModalType;
