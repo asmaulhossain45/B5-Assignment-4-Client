@@ -35,7 +35,7 @@ export const booksApi = createApi({
       query: (params = {}) => {
         const {
           filter = "",
-          sortBy = "title",
+          sortBy = "createdAt",
           sortOrder = "asc",
           page = 1,
           limit = 10,
